@@ -1,0 +1,3 @@
+from slides.settings import *
+
+
