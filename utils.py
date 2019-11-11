@@ -1,11 +1,13 @@
+#!/usr/bin/env python3
+
 from subprocess import Popen
 from subprocess import PIPE
 
-def get_container_ip():
+def get_container_ip(container_name):
     """Quick function to get the subprocess
     """
     # get the container id of the web application container
-    result = Popen(["docker", "ps", "-aqf", "name=slide_classifier_web"], stdout=PIPE).communicate()
+    result = Popen(["docker", "ps", "-aqf", "name=" + container_name], stdout=PIPE).communicate()
     container_id = clean_popen_results(result)
 
     # get the ip address of the web application container
@@ -22,5 +24,5 @@ def clean_popen_results(result):
 
 
 if __name__ == "__main__":
-    print('the web app is running at:', get_container_ip())
-    
+    print('the web app is running at:', get_container_ip("slide_classifier_web_1"))
+    print('the database server is running at: ', get_container_ip("slide_classifier_db_1"))
