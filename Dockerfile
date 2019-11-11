@@ -5,7 +5,7 @@ RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get -yq install dialog apt-utils 
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get -yq install build-essential curl python-dev python3-dev python3-pip supervisor libpcre3 libpcre3-dev
+RUN DEBIAN_FRONTEND=noninteractive apt-get -yq install build-essential curl python3-dev python3-pip supervisor libpcre3 libpcre3-dev
 
 COPY web/ /app
 WORKDIR /app
