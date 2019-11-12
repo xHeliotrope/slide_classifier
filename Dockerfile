@@ -7,14 +7,16 @@ RUN apt-get update && \
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get -yq install build-essential curl python3-dev python3-pip supervisor libpcre3 libpcre3-dev
 
+RUN pip install --upgrade pip
+COPY web/requirements.txt /tmp/
+RUN pip install --no-cache-dir -r /tmp/requirements.txt
+
 COPY web/ /app
 WORKDIR /app
 
-RUN pip install --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
+RUN useradd uwsgi
 
 COPY web/config/supervisord.conf /etc/supervisord.conf
 COPY web/config/uwsgi/slides.ini /etc/uwsgi/slides.ini
 
-RUN python manage.py migrate
 CMD ["/usr/bin/supervisord"]

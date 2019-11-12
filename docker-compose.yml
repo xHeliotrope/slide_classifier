@@ -5,7 +5,7 @@ services:
     restart: always
     build: .
     expose:
-      - "80"
+      - "8100"
     networks:
       - dev
     depends_on: 
@@ -15,6 +15,14 @@ services:
     image: postgres:latest
     volumes:
       - pgdata:/var/lib/postgresql/data/
+    networks:
+      - dev
+  nginx:
+    restart: always
+    build: ./nginx
+    ports:
+      - "443:443"
+      - "80:80"
     networks:
       - dev
 

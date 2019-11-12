@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from classifier.views import HomeView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', HomeView.as_view(), name='homepage'),
+    path('hash_word/<str:word>', HomeView.as_view(), name='hompage2'),
 ]

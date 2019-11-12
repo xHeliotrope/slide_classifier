@@ -3,6 +3,7 @@
 from subprocess import Popen
 from subprocess import PIPE
 
+
 def get_container_ip(container_name):
     """Quick function to get the subprocess
     """
@@ -24,5 +25,8 @@ def clean_popen_results(result):
 
 
 if __name__ == "__main__":
-    print('the web app is running at:', get_container_ip("slide_classifier_web_1"))
+    print('the http server is running at: ', get_container_ip("slide_classifier_nginx_1"))
+    print('the app server is running at:', get_container_ip("slide_classifier_web_1"))
     print('the database server is running at: ', get_container_ip("slide_classifier_db_1"))
+    
+    
