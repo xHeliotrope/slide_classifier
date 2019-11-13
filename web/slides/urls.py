@@ -16,9 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from classifier.views import HomeView
+from classifier.views import SlideDataView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', HomeView.as_view(), name='homepage'),
-    path('hash_word/<str:word>', HomeView.as_view(), name='hompage2'),
+    path("admin/", admin.site.urls),
+    path("", HomeView.as_view(), name="homepage"),
+    path("hash_word/<str:word>", HomeView.as_view(), name="homepage2"),
+    path("slide", SlideDataView.as_view(), name="slide_data"),
 ]

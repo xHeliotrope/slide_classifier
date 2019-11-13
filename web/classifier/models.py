@@ -4,6 +4,7 @@ from django.db import models
 class ImageFile(models.Model):
     """For tracking Image data
     """
+
     name = models.TextField(blank=True)
     file_hash = models.TextField(blank=True)
     # Audit Fields.
@@ -16,4 +17,5 @@ class ImageFile(models.Model):
 class DataSource(models.Model):
     """For tracking data sources
     """
+
     name = models.TextField(blank=True)

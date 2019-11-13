@@ -7,28 +7,42 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='DataSource',
+            name="DataSource",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.TextField(blank=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.TextField(blank=True)),
             ],
         ),
         migrations.CreateModel(
-            name='ImageFile',
+            name="ImageFile",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.TextField(blank=True)),
-                ('file_hash', models.TextField(blank=True)),
-                ('created_ts', models.DateTimeField(auto_now_add=True)),
-                ('created_by', models.CharField(blank=True, max_length=100)),
-                ('updated_ts', models.DateTimeField(auto_now=True)),
-                ('updated_by', models.CharField(blank=True, max_length=100)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.TextField(blank=True)),
+                ("file_hash", models.TextField(blank=True)),
+                ("created_ts", models.DateTimeField(auto_now_add=True)),
+                ("created_by", models.CharField(blank=True, max_length=100)),
+                ("updated_ts", models.DateTimeField(auto_now=True)),
+                ("updated_by", models.CharField(blank=True, max_length=100)),
             ],
         ),
     ]
-

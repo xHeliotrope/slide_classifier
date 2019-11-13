@@ -3,18 +3,22 @@
 
 #### Install necessary software
 
-Windows or MacOS
+Windows
 
-- Install [Python 3](https://www.python.org/downloads/) -> to run script to help with loading the application 
-- Install [Docker](https://docs.docker.com/v17.12/install/#desktop) -> for running the app in a platform-independant manner
-- Install [Docker Compose](https://docs.docker.com/compose/install) -> manages connecting multiple services (database, http server)
+MacOS
+
+ - Install [Python 3](https://www.python.org/downloads/) -> to run script to help with loading the application
+ - Install [Docker](https://docs.docker.com/v17.12/install/#desktop) -> for running the app in a platform-independant manner
+ - Install [Docker Compose](https://docs.docker.com/compose/install) -> manages connecting multiple services (database, http server)
+
+Caveats
+ * Due to how MacOs [internal networking works with Docker](https://google.com), the app will run on localhost, and using the `utils.py` script to find the http server address is unneeded. However, it is recommended to run `sudo apachectl stop`, in case the default Apache Server that serves apps in the **Sites** Directory is running.
 
  Linux
 
-- Install [Python 3](https://www.python.org/downloads/) -> to run script to help with loading the application 
-- Install [Docker](https://docs.docker.com/v17.12/install/#server) -> for running the app in a platform-independant manner
-- Install [Docker Compose](https://docs.docker.com/compose/install) -> manages connecting multiple services (database, http server)
-
+ - Install [Python 3](https://www.python.org/downloads/) -> to run script to help with loading the application
+ - Install [Docker](https://docs.docker.com/v17.12/install/#server) -> for running the app in a platform-independant manner
+ - Install [Docker Compose](https://docs.docker.com/compose/install) -> manages connecting multiple services (database, http server)
 
 ## Getting the app running
 
