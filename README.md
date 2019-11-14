@@ -25,29 +25,24 @@ Caveats
 Once Docker Compose is installed, get in a unix-like terminal of your choice. If on windows, I suggest [git bash](http://gitbash.org').
 
 Run
-	```bash
+
+```bash
 docker-compose build
 ```
-	to pull in the database image and compile the web app image. This may take awhile.
-
-Next, run
-	```bash
+to pull in the database image and compile the web app image. This may take awhile. Next, run
+```bash
 docker-compose up -d
 ```
-	to start the database and app containers. When this script is completed, run the utils.py script with the command
-
+to start the database and app containers. When this script is completed, run the utils.py script with the command
 ```bash
 python3 utils.py
 ```
-This will return the local IP address that the web application and database servers are running on. Put the IP address of the web application in the browser of your choice, and you can use the app.
-Additionally, to intialize the database for the web application, the command
-
+This will return the local IP address that the web application and database servers are running on. Put the IP address of the web application in the browser of your choice, and you can use the app. Additionally, to intialize the database for the web application, the command
 ```bash
 docker-compose run --rm web python manage.py migrate
 ```
 should be run after
-
-```bash
+```sh
 docker-compose up -d
 ```
 command has successfully run
