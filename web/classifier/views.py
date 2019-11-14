@@ -1,8 +1,11 @@
 import hashlib
+import io
 
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import View
 import openslide
+from openslide import deepzoom
 
 
 class HomeView(View):
@@ -37,18 +40,19 @@ def compute_hash(name):
     return hash_md5.hexdigest()
 
 
-class SlideDataView(View):
+class SlideView(View):
     """Get data about a particular slide
     """
+
     template_name = "slide.html"
 
     DEEPZOOM_SLIDE = None
-    DEEPZOOM_FORMAT = 'jpeg'
+    DEEPZOOM_FORMAT = "jpeg"
     DEEPZOOM_TILE_SIZE = 254
     DEEPZOOM_OVERLAP = 1
     DEEPZOOM_LIMIT_BOUNDS = True
     DEEPZOOM_TILE_QUALITY = 75
-    SLIDE_NAME = 'slide'
+    SLIDE_NAME = "slide"
 
     def get(self, request, word=None):
         filename = "images/sample.svs"
@@ -62,10 +66,46 @@ class SlideDataView(View):
         except Exception as exc:
             print(exc)
 
-        print('type img: ', type(img))
+        img_type = type(img)
         context = {
             "slide_hash": slide_hash,
             "slide_img": img,
-            "slide_type": type(img)
+            "slide_type": img_type,
         }
         return render(request, self.template_name, context)
+
+
+class SlideDataView(View):
+    """Streaming slide data
+    """
+
+    def get(self, request):
+        """
+        """
+        filename = "images/sample.svs"
+        slide = openslide.OpenSlide(filename)
+        #zoomies = deepzoom.DeepZoomGenerator(slide)
+        buff = io.BytesIO()
+        slide.save(buff, 'jpeg', 75)
+
+        response = HttpResponse(buff.get_value(), content_type="image/jpeg")
+        # slide.save(response, "JPEG")
+        return response
+
+
+class SlideImageView(View):
+    """Streaming slide data
+    """
+
+    def get(self, request):
+        """
+        """
+        filename = "images/sample.svs"
+        slide = openslide.OpenSlide(filename)
+        #zoomies = deepzoom.DeepZoomGenerator(slide)
+        buff = io.BytesIO()
+        slide.save(buff, 'jpeg', 75)
+
+        response = HttpResponse(buff.get_value(), content_type="image/jpeg")
+        # slide.save(response, "JPEG")
+        return response

@@ -7,6 +7,7 @@ class ImageFile(models.Model):
 
     name = models.TextField(blank=True)
     file_hash = models.TextField(blank=True)
+
     # Audit Fields.
     created_ts = models.DateTimeField(auto_now_add=True)
     created_by = models.CharField(max_length=100, blank=True)
