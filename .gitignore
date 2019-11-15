@@ -1,5 +1,6 @@
 ve/
 web/images/
+web/slides/db.sqlite3
 
 __pycache__
 *.pyc
