@@ -7,4 +7,30 @@
 
 <h4> This is an image served via HTTP:</h4><br>
 
-<img src="/slide/data" height="200" width="200" alt="slide image" />
+<img src="/slide/image" height="2000" width="2000" alt="slide image" />
+
+
+<textarea id="metadata" cols=50 rows=20></textarea>
+
+<script>
+  var request = new XMLHttpRequest()
+  request.open('GET', '/slide/data', true)
+
+  request.onload = function() {
+    if (this.status >= 200 && this.status < 400) {
+    // Success!
+    var data = JSON.parse(this.response)
+    var stuff = document.getElementById("metadata")
+    stuff.value = JSON.stringify(data, undefined, 4)
+    } else {
+    // We reached our target server, but it returned an error
+    console.log('hmmm.... looks like there was a goof')
+    }
+  }
+
+  request.onerror = function() {
+    // There was a connection error of some sort
+  }
+
+  request.send()
+</script>

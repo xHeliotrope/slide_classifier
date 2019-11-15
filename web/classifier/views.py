@@ -1,5 +1,6 @@
 import hashlib
 import io
+import json
 
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -78,34 +79,63 @@ class SlideView(View):
 class SlideDataView(View):
     """Streaming slide data
     """
+    def package_metadata(self, img, img_meta):
+        """Get metadata for an image
+        """
+        img_prop = img.properties;
+        img_meta["level_count"] = int(img.level_count);
+        img_meta["width"]  = img.dimensions[0];
+        img_meta["height"] = img.dimensions[1];
+        img_meta["objective_power"] = img_prop[openslide.PROPERTY_NAME_OBJECTIVE_POWER];
+        img_meta["mpp_x"] = float(img_prop[openslide.PROPERTY_NAME_MPP_X]);
+        img_meta["mpp_y"] = float(img_prop[openslide.PROPERTY_NAME_MPP_Y]);
+        img_meta["mpp-x"] = float(img_prop[openslide.PROPERTY_NAME_MPP_X]);
+        img_meta["mpp-y"] = float(img_prop[openslide.PROPERTY_NAME_MPP_Y]);
+        img_meta_prop = {}
+        for p in img_prop:
+            img_meta_prop[p] = img_prop[p];
+        img_meta["properties"] = img_meta_prop;
+        return img_meta
 
     def get(self, request):
         """
         """
         filename = "images/sample.svs"
         slide = openslide.OpenSlide(filename)
-        #zoomies = deepzoom.DeepZoomGenerator(slide)
-        buff = io.BytesIO()
-        slide.save(buff, 'jpeg', 75)
-
-        response = HttpResponse(buff.get_value(), content_type="image/jpeg")
-        # slide.save(response, "JPEG")
+        metadata = self.package_metadata(slide, {})
+        response = HttpResponse(json.dumps(metadata), content_type="application/json")
         return response
 
 
 class SlideImageView(View):
     """Streaming slide data
     """
+    def get2(self, request, x, y, offset):
+        """for Tiling/sampling subsections of a slide
+        """
+        pass
 
     def get(self, request):
         """
         """
         filename = "images/sample.svs"
         slide = openslide.OpenSlide(filename)
-        #zoomies = deepzoom.DeepZoomGenerator(slide)
-        buff = io.BytesIO()
-        slide.save(buff, 'jpeg', 75)
-
-        response = HttpResponse(buff.get_value(), content_type="image/jpeg")
-        # slide.save(response, "JPEG")
+        print('slide dimensions: ', slide.dimensions)
+        my_guy = slide.read_region((1000, 1000), 0, (3000, 3000))
+        response = HttpResponse(content_type="image/jpeg")
+        my_guy.save(response, format='png')
         return response
+
+
+
+class ThumbnailView(View):
+    """For retrieving the thumbnail of a slide
+    """
+
+    def get_thumbnail(self, request, img_name):
+        pass
+
+    def get(self, request)
+        """
+        """
+        return HttpResponse('hi')
