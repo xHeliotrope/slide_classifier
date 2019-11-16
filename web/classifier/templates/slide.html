@@ -1,36 +1,70 @@
-<h3> This is a slide hash: </h3><br>
-{{ slide_hash }}
+<button id="getMetadata">Retrieve Slide Metadata</button>
+<textarea id="metadata" cols=100 rows=20></textarea>
 
-<h4> This is slide img:</h4><br>
+<br>
+<strong>Anchor X: </strong><input type="text" id="anchor_x" value="1000"></input>
+<br>
+<strong>Anchor Y: </strong><input type="text" id="anchor_y" value="1000"></input>
+<br>
+<strong>Offset X: </strong><input type="text" id="size_x" value="1000"></input>
+<br>
+<strong>Offset Y: </strong><input type="text" id="size_y" value="1000"></input>
+<br>
+<strong>Level: </strong><input type="text" id="level" value="0"></input>
+<button id="getSection">Push this please</button>
+<br>
 
-{{ slide_img }}
-
-<h4> This is an image served via HTTP:</h4><br>
-
-<img src="/slide/image" height="2000" width="2000" alt="slide image" />
-
-
-<textarea id="metadata" cols=50 rows=20></textarea>
+<img id="slideimg" src="/slide/image" height="2000" width="2000" alt="slide image" />
 
 <script>
-  var request = new XMLHttpRequest()
-  request.open('GET', '/slide/data', true)
+  // global constants
+  const resizeButton = document.getElementById("getSection")
+  const metadataButton = document.getElementById("getMetadata")
+  const metadata = document.getElementById("metadata")
+  const slideimg = document.getElementById("slideimg")
 
-  request.onload = function() {
-    if (this.status >= 200 && this.status < 400) {
-    // Success!
-    var data = JSON.parse(this.response)
-    var stuff = document.getElementById("metadata")
-    stuff.value = JSON.stringify(data, undefined, 4)
-    } else {
-    // We reached our target server, but it returned an error
-    console.log('hmmm.... looks like there was a goof')
+  // these will vary
+  let metadataRequest = null
+  let metaResponseData = null
+  let imageSectionRequest = null
+  let imageSectionParams = {}
+  let imageSectionUrl = null
+
+  function getImageSection() {
+	params = {
+	  "ax": document.getElementById("anchor_x").value,
+	  "ay": document.getElementById("anchor_y").value,
+	  "sx": document.getElementById("size_x").value,
+	  "sy": document.getElementById("size_y").value,
+	  "level": document.getElementById("level").value,
+	}
+	console.log(params)
+    imageSectionRequest = new XMLHttpRequest()
+	imageSectionUrl = 'slide/section/' + params['ax'] + '/' + params['ay'] + '/' + params['sx'] + '/' + params['sy'] + '/' + params['level']
+	slideimg.src = imageSectionUrl
+	slideimg.width = params['sx']
+	slideimg.height = params['sy']
+  }
+
+  function getMetadata() {
+    metadataRequest = new XMLHttpRequest()
+    metadataRequest.open('GET', '/slide/data', true)
+    metadataRequest.onload = function() {
+      if (this.status >= 200 && this.status < 400) {
+      metaResponseData = JSON.parse(this.response)
+      metadata.value = JSON.stringify(metaResponseData, undefined, 4)
+      } else {
+      // We reached our target server, but it returned an error
+      console.log('hmmm.... looks like there was a goof')
+      }
     }
+    metadataRequest.onerror = function() {
+      // There was a connection error of some sort
+    }
+    metadataRequest.send()
   }
 
-  request.onerror = function() {
-    // There was a connection error of some sort
-  }
+  metadataButton.addEventListener('click', getMetadata)
+  resizeButton.addEventListener('click', getImageSection)
 
-  request.send()
 </script>

@@ -29,18 +29,6 @@ class HomeView(View):
         return render(request, self.template_name, ctx)
 
 
-def compute_hash(name):
-    """Compute the MD5 hash of a file, returned as a hexstring
-    # lifted from (https://github.com/SBU-BMI/quip_slide_metadata/blob/master/image_metadata.py)
-    """
-    hash_md5 = hashlib.md5()
-    # curious if this will work on large files
-    with open(name, "rb") as f:
-        for chunk in iter(lambda: f.read(4096), b""):
-            hash_md5.update(chunk)
-    return hash_md5.hexdigest()
-
-
 class SlideView(View):
     """Get data about a particular slide
     """
@@ -57,7 +45,6 @@ class SlideView(View):
 
     def get(self, request, word=None):
         filename = "images/sample.svs"
-        slide_hash = compute_hash(filename)
         try:
             img = openslide.OpenSlide(filename)
         except openslide.OpenSlideUnsupportedFormatError as exc:
@@ -67,11 +54,9 @@ class SlideView(View):
         except Exception as exc:
             print(exc)
 
-        img_type = type(img)
         context = {
-            "slide_hash": slide_hash,
+            "levels": img.dimensions,
             "slide_img": img,
-            "slide_type": img_type,
         }
         return render(request, self.template_name, context)
 
@@ -120,12 +105,25 @@ class SlideImageView(View):
         """
         filename = "images/sample.svs"
         slide = openslide.OpenSlide(filename)
-        print('slide dimensions: ', slide.dimensions)
-        my_guy = slide.read_region((1000, 1000), 0, (3000, 3000))
+        default_subsection = slide.read_region((1000, 1000), 0, (3000, 3000))
         response = HttpResponse(content_type="image/jpeg")
-        my_guy.save(response, format='png')
+        default_subsection.save(response, format='png')
         return response
 
+
+class SlideSubsectionView(View):
+    """For retrieving a subsection of a slide
+    """
+
+    def get(self, request, anchor_x, anchor_y, size_x, size_y, level):
+        """GET a subsection
+        """
+        filename = "images/sample.svs"
+        slide = openslide.OpenSlide(filename)
+        subsection = slide.read_region((anchor_x, anchor_y), level, (size_x, size_y))
+        response = HttpResponse(content_type="image/jpeg")
+        subsection.save(response, format='png')
+        return response
 
 
 class ThumbnailView(View):
@@ -135,7 +133,7 @@ class ThumbnailView(View):
     def get_thumbnail(self, request, img_name):
         pass
 
-    def get(self, request)
+    def get(self, request):
         """
         """
         return HttpResponse('hi')
