@@ -16,7 +16,7 @@ WORKDIR /app
 
 RUN useradd uwsgi
 
-COPY web/config/supervisord.conf /etc/supervisord.conf
-COPY web/config/uwsgi/slides.ini /etc/uwsgi/slides.ini
+COPY web/services/supervisord.conf /etc/supervisor/conf.d/uwsgi.conf
+COPY web/services/uwsgi/slides.ini /etc/uwsgi/slides.ini
 
 CMD ["/usr/bin/supervisord"]

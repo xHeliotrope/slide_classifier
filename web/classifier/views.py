@@ -114,7 +114,6 @@ class SlideImageView(View):
 class SlideSubsectionView(View):
     """For retrieving a subsection of a slide
     """
-
     def get(self, request, anchor_x, anchor_y, size_x, size_y, level):
         """GET a subsection
         """
@@ -129,7 +128,6 @@ class SlideSubsectionView(View):
 class ThumbnailView(View):
     """For retrieving the thumbnail of a slide
     """
-
     def get_thumbnail(self, request, img_name):
         pass
 

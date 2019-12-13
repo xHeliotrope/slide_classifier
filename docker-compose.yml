@@ -1,24 +1,50 @@
 version: '3.4'
 
 services: 
-  web:
-    restart: always
-    build: .
-    expose:
-      - "8100"
-    depends_on: 
-      - db
   db:
     restart: always
     image: postgres:latest
     volumes:
       - pgdata:/var/lib/postgresql/data/
+    networks:
+      - pg_network
   nginx:
     restart: always
-    build: ./nginx
+    image: nginx:latest
     ports:
       - "443:443"
       - "80:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - static_volume:/app/var/static_root
+      - media_volume:/app/var/media_root
+    networks:
+      - nginx_network
+    depends_on:
+      - web
+      - db
+  web:
+    restart: always
+    build: .
+    image: raumdeuter/slides
+    command: /usr/bin/supervisord -c /etc/supervisor/conf.d/uwsgi.conf
+    volumes:
+      - static_volume:/app/var/static_root
+      - media_volume:/app/var/media_root
+    networks:
+      - nginx_network
+      - pg_network
+    depends_on:
+      - db
 
 volumes:
   pgdata:
+  static_volume:
+  media_volume:
+
+networks:
+  nginx_network:
+    driver: bridge
+  pg_network:
+    driver: bridge
+
