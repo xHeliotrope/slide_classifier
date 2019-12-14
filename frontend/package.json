@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build && rm -r ../web/static/* && rsync -a dist/static/* ../web/static && rsync -a dist/static/* ../web/classifier/static && cp dist/index.html ../web/classifier/templates && cp public/openseadragon/openseadragon.js ../web/classifier/static/js && cp -r public/openseadragon/images/* ../web/media/",
+    "build": "vue-cli-service build && rm -r ../web/static/* && rsync -a dist/static/* ../web/static && rsync -a dist/static/* ../web/classifier/static && cp dist/index.html ../web/classifier/templates && cp public/openseadragon/openseadragon.js ../web/static/js && cp -r public/openseadragon/images/* ../web/media/",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {

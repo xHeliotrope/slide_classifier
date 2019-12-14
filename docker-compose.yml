@@ -16,6 +16,9 @@ services:
       - "80:80"
     volumes:
       - type: bind
+        source: ./web/media
+        target: /media
+      - type: bind
         source: ./web/static
         target: /static
       - type: bind
