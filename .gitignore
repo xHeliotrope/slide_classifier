@@ -1,7 +1,9 @@
 ve/
 web/images/
 web/slides/db.sqlite3
+web/static/js/openseadragon.js
 
+frontend/public/openseadragon
 node_modules
 
 *.log
