@@ -2,6 +2,11 @@ ve/
 web/images/
 web/slides/db.sqlite3
 
+node_modules
+
+*.log
+*.pid
+
 __pycache__
 *.pyc
 *.swp
