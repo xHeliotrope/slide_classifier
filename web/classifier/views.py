@@ -1,6 +1,8 @@
 import hashlib
 import io
 import json
+import os
+import subprocess
 
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -29,6 +31,16 @@ class HomeView(View):
         return render(request, self.template_name, ctx)
 
 
+class ListSlidesView(View):
+    """For the List Files
+    """
+    def get(self, request):
+        """
+        """
+        images = [img for img in os.listdir('/app/images') if img.endswith('jp2')]
+        return HttpResponse(json.dumps(images), content_type="application/json")
+
+
 class SlideView(View):
     """Get data about a particular slide
     """
@@ -44,7 +56,7 @@ class SlideView(View):
     SLIDE_NAME = "slide"
 
     def get(self, request, word=None):
-        filename = "images/sample.svs"
+        filename = "images/0001.jp2"
         try:
             img = openslide.OpenSlide(filename)
         except openslide.OpenSlideUnsupportedFormatError as exc:
@@ -55,7 +67,7 @@ class SlideView(View):
             print(exc)
 
         context = {
-            "levels": img.dimensions,
+            "levels": 3,
             "slide_img": img,
         }
         return render(request, self.template_name, context)
