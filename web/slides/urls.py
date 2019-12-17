@@ -20,10 +20,11 @@ from django.urls import path
 
 from classifier.views import HomeView
 from classifier.views import ListSlidesView
-from classifier.views import SlideView
 from classifier.views import SlideDataView
 from classifier.views import SlideImageView
 from classifier.views import SlideSubsectionView
+from classifier.views import SlideThumbnail
+from classifier.views import SlideView
 
 
 urlpatterns = [
@@ -32,6 +33,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", HomeView.as_view(), name="homepage"),
     path("list_slides", ListSlidesView.as_view(), name="list_slides"),
+    path("thumbnail/<str:image_name>", SlideThumbnail.as_view(), name="get_thumbnail"),
     path("hash_word/<str:word>", HomeView.as_view(), name="homepage_hash"),
     path("slide", SlideView.as_view(), name="slide"),
     path("slide/data", SlideDataView.as_view(), name="slide_data"),

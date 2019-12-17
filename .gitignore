@@ -1,8 +1,9 @@
 ve/
 web/images/
 web/slides/db.sqlite3
-web/static/js
 web/classifier/static/js
+web/classifier/static/css
+web/static/js
 web/static/css
 
 frontend/public/openseadragon

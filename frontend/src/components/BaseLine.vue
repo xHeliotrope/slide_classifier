@@ -52,12 +52,24 @@
 					v-show="active_window == 1"
         >
           <v-col class="text-center">
-             Window 1
-            <ul>
-              <li v-for="slide in slides_list" v-bind:key="slide.id">
-                {{ slide }}
-              </li>
-            </ul>
+            Window 1
+            <v-row
+              :align="alignment"
+              :justify="justify"
+              class="grey lighten-5"
+              style="height: 300px;"
+            >
+              <v-card
+                v-for="slide in slides_list"
+                :key="slide.id"
+                class="ma-3 pa-6"
+                outlined
+                tile
+               >
+                 <img v-bind:src="getSrc(slide)" v-bind:alt="slide"/>
+                   {{ slide }}
+                 </v-card>
+            </v-row>
           </v-col>
         </v-row>
         <v-row
@@ -101,11 +113,14 @@
     data: () => ({
       drawer: null,
 			active_window: 1,
-			slides_list: ['sup.jp2', 'kewl.jp2'],
+			slides_list: [],
     }),
 		methods: {
       setActiveWindow: function(window_number) {
         this.active_window = window_number
+      },
+      getSrc: function(slide){
+          return "/thumbnail/" + slide
       }
     },
     mounted () {

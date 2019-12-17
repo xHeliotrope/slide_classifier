@@ -35,11 +35,30 @@ class ListSlidesView(View):
     """For the List Files
     """
     def get(self, request):
-        """
-        """
-        images = [img for img in os.listdir('/app/images') if img.endswith('jp2')]
+        images = [img for img in os.listdir('/app/images') if img.endswith('svs')]
         return HttpResponse(json.dumps(images), content_type="application/json")
 
+class SlideThumbnail(View):
+    """For gettting the Slide thumbnail
+    """
+    def get(self, request, image_name):
+        """
+        """
+        filename = f'images/{image_name}'
+        # get the slide object
+        try:
+            img = openslide.OpenSlide(filename)
+        except openslide.OpenSlideUnsupportedFormatError as exc:
+            print(exc)
+        except openslide.OpenSlideError as exc:
+            print(exc)
+        except Exception as exc:
+            print(exc)
+
+        thumbnail = img.get_thumbnail((150, 150))
+        response = HttpResponse(content_type="image/jpeg")
+        thumbnail.save(response, format='png')
+        return response
 
 class SlideView(View):
     """Get data about a particular slide
@@ -56,7 +75,7 @@ class SlideView(View):
     SLIDE_NAME = "slide"
 
     def get(self, request, word=None):
-        filename = "images/0001.jp2"
+        filename = "images/C3L-00452-41.svs"
         try:
             img = openslide.OpenSlide(filename)
         except openslide.OpenSlideUnsupportedFormatError as exc:
@@ -97,7 +116,7 @@ class SlideDataView(View):
     def get(self, request):
         """
         """
-        filename = "images/sample.svs"
+        filename = "images/C3L-00452-41.svs"
         slide = openslide.OpenSlide(filename)
         metadata = self.package_metadata(slide, {})
         response = HttpResponse(json.dumps(metadata), content_type="application/json")
@@ -115,7 +134,7 @@ class SlideImageView(View):
     def get(self, request):
         """
         """
-        filename = "images/sample.svs"
+        filename = "images/C3L-00452-41.svs"
         slide = openslide.OpenSlide(filename)
         default_subsection = slide.read_region((1000, 1000), 0, (3000, 3000))
         response = HttpResponse(content_type="image/jpeg")
@@ -129,21 +148,9 @@ class SlideSubsectionView(View):
     def get(self, request, anchor_x, anchor_y, size_x, size_y, level):
         """GET a subsection
         """
-        filename = "images/sample.svs"
+        filename = "images/C3L-00452-41.svs"
         slide = openslide.OpenSlide(filename)
         subsection = slide.read_region((anchor_x, anchor_y), level, (size_x, size_y))
         response = HttpResponse(content_type="image/jpeg")
         subsection.save(response, format='png')
         return response
-
-
-class ThumbnailView(View):
-    """For retrieving the thumbnail of a slide
-    """
-    def get_thumbnail(self, request, img_name):
-        pass
-
-    def get(self, request):
-        """
-        """
-        return HttpResponse('hi')
