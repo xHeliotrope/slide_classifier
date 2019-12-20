@@ -49,10 +49,9 @@
         <v-row
           align="center"
           justify="center"
-					v-show="active_window == 1"
+					v-show="activeWindow == 1"
         >
           <v-col class="text-center">
-            Window 1
             <v-row
               :align="alignment"
               :justify="justify"
@@ -60,7 +59,7 @@
               style="height: 300px;"
             >
               <v-card
-                v-for="slide in slides_list"
+                v-for="slide in slidesList"
                 :key="slide.id"
                 class="ma-3 pa-6"
                 outlined
@@ -75,16 +74,17 @@
         <v-row
           align="center"
           justify="center"
-					v-show="active_window == 2"
+					v-show="activeWindow == 2"
         >
           <v-col class="text-center">
-					Window 2
+						<div id="seadragonView"></div>
+						<img src="/media/cat.jpg" alt="placeholder" height="400" width="600">
           </v-col>
         </v-row>
         <v-row
           align="center"
           justify="center"
-					v-show="active_window == 3"
+					v-show="activeWindow == 3"
         >
           <v-col class="text-center">
 					Window 3
@@ -112,21 +112,48 @@
     },
     data: () => ({
       drawer: null,
-			active_window: 1,
-			slides_list: [],
+			activeWindow: 1,
+			slidesList: [],
+			activeSlide: null,
+			viewer: null,
+			tileSources: null,
     }),
 		methods: {
-      setActiveWindow: function(window_number) {
-        this.active_window = window_number
+      setActiveWindow: function(windowNumber) {
+        this.activeWindow = windowNumber
       },
-      getSrc: function(slide){
+      getSrc: function(slide) {
           return "/thumbnail/" + slide
-      }
+      },
+			setTileSources: function(slide) {
+				this.tileSources = "/tiles/" + slide
+			},
+			setPrefixUrl: function(slide) {
+				this.prefixUrl = "/images/" + slide
+			},
+			initSeadragon: function() {
+			  this.viewer = new OpenSeadragon({
+          id: "seadragonView",
+          tileSources: this.tileSources,
+          prefixUrl: "/media",
+          showNavigator: true,
+          showRotationControl: true,
+          animationTime: 0.5,
+          blendTime: 0.1,
+          constrainDuringPan: true,
+          maxZoomPixelRatio: 2,
+          minZoomLevel: 1,
+          visibilityRatio: 1,
+          zoomPerScroll: 2,
+          timeout: 120000,
+        });
+			},
     },
     mounted () {
       axios
         .get('/list_slides')
-        .then(response => (this.slides_list = response.data))
+        .then(response => (this.slidesList = response.data))
+
     }
   }
 </script>

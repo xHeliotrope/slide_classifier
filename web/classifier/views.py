@@ -154,3 +154,5 @@ class SlideSubsectionView(View):
         response = HttpResponse(content_type="image/jpeg")
         subsection.save(response, format='png')
         return response
+
+
