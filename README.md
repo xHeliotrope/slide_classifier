@@ -29,7 +29,7 @@ again to get the application up. The IP address of the application may change, s
 
 Tested on:
  - [x] - Linux - Ubuntu
- - [x] - MacOS - Majave
+ - [x] - MacOS - Mojave
  - [ ] - Windows - 10
 
 
