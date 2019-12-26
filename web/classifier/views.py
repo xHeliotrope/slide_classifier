@@ -162,9 +162,6 @@ class SlideSubsectionView(View):
         return response
 
 
-# hack just to see if this works
-cache = None
-
 class SlideTileView(View):
     """For a tile of a slide
     """
@@ -202,9 +199,45 @@ class SlideTileView(View):
         buf = PILBytesIO()
         DEEPZOOM_TILE_QUALITY = 75
         tile.save(buf, _format, quality=DEEPZOOM_TILE_QUALITY)
-        resp = HttpResponse(buf.getvalue())
-        resp.mimetype = 'image/%s' % _format
-        return resp
+        response = HttpResponse(content_type="image/jpeg")
+        tile.save(response, format='jpeg')
+        return response
+
+    def _get_slide(self, name):
+        import os
+        path = os.path.abspath(os.path.join('/app/images', name))
+        try:
+            slide = self.cache.get(path)
+            slide.filename = os.path.basename(path)
+            return slide
+        except openslide.OpenSlideError as exc:
+            raise exc
+
+
+class SlideXMLView(View):
+    """
+    """
+    def setup_slide_cache(self, slide_name):
+        config = {
+            'DEEPZOOM_FORMAT': 'jpeg',
+            'DEEPZOOM_TILE_SIZE': 254,
+            'DEEPZOOM_OVERLAP': 1,
+            'DEEPZOOM_LIMIT_BOUNDS': True,
+            'DEEPZOOM_TILE_QUALITY': 75,
+            'SLIDE_NAME': slide_name
+        }
+        config = {
+            'tile_size': 254,
+            'overlap': 1,
+            'limit_bounds': False
+        }
+        self.cache = _SlideCache(SLIDE_CACHE_SIZE, config)
+
+    def get(self, request, slide_name):
+        self.setup_slide_cache(slide_name)
+        slide = self._get_slide(slide_name)
+        response = HttpResponse(slide.get_dzi("jpeg"), content_type="application/xml")
+        return response
 
     def _get_slide(self, name):
         import os

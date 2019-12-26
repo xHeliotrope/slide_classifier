@@ -116,7 +116,7 @@
 			slidesList: [],
 			activeSlide: null,
 			viewer: null,
-			tileSources: null,
+			tileSources: '/slide/xml/',
     }),
 		methods: {
       setActiveWindow: function(windowNumber) {
@@ -137,7 +137,7 @@
 			initSeadragon: function() {
 			  this.viewer = new OpenSeadragon({
           id: "seadragonView",
-          tileSources: this.tileSources,
+          tileSources: this.tileSources + this.activeSlide,
           prefixUrl: "/media/",
           showNavigator: true,
           showRotationControl: true,
@@ -153,6 +153,7 @@
 			},
     },
     mounted () {
+      this.activeSlide = 'C3L-00452-41.svs';
       axios
         .get('/list_slides')
         .then(response => (this.slidesList = response.data))

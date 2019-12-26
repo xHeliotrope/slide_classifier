@@ -20,12 +20,11 @@ from django.urls import path
 
 from classifier.views import HomeView
 from classifier.views import ListSlidesView
-from classifier.views import SlideDataView
 from classifier.views import SlideImageView
-from classifier.views import SlideSubsectionView
 from classifier.views import SlideThumbnail
 from classifier.views import SlideTileView
 from classifier.views import SlideView
+from classifier.views import SlideXMLView
 
 
 urlpatterns = [
@@ -37,8 +36,7 @@ urlpatterns = [
     path("thumbnail/<str:image_name>", SlideThumbnail.as_view(), name="get_thumbnail"),
     path("hash_word/<str:word>", HomeView.as_view(), name="homepage_hash"),
     path("slide", SlideView.as_view(), name="slide"),
-    path("slide/data", SlideDataView.as_view(), name="slide_data"),
     path("slide/image", SlideImageView.as_view(), name="slide_image"),
-    path("slide/section/<int:anchor_x>/<int:anchor_y>/<int:size_x>/<int:size_y>/<int:level>", SlideSubsectionView.as_view(), name="slide_subsection"),
-    path("tile/<str:slide_name>/<int:level>/<int:col>/<int:row>/<str:_format>", SlideTileView.as_view(), name="slide_tiling"),
+    path("slide/xml/<str:slide_name>", SlideXMLView.as_view(), name="slide_data"),
+    path("slide/xml/<str:slide_name>_files/<int:level>/<int:col>_<int:row>.<str:_format>", SlideTileView.as_view(), name="slide_tiling"),
 ]
