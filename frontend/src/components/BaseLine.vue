@@ -75,10 +75,10 @@
           align="center"
           justify="center"
 					v-show="activeWindow == 2"
+					class="slideRow"
         >
-          <v-col class="text-center">
+          <v-col class="text-center slideCol">
 						<div id="seadragonView"></div>
-						<img src="/media/cat.jpg" alt="placeholder" height="400" width="600">
           </v-col>
         </v-row>
         <v-row
@@ -120,6 +120,9 @@
     }),
 		methods: {
       setActiveWindow: function(windowNumber) {
+				if (windowNumber == 2) {
+					this.initSeadragon()
+				}
         this.activeWindow = windowNumber
       },
       getSrc: function(slide) {
@@ -135,7 +138,7 @@
 			  this.viewer = new OpenSeadragon({
           id: "seadragonView",
           tileSources: this.tileSources,
-          prefixUrl: "/media",
+          prefixUrl: "/media/",
           showNavigator: true,
           showRotationControl: true,
           animationTime: 0.5,
@@ -157,3 +160,16 @@
     }
   }
 </script>
+<style scoped>
+div#seadragonView {
+	height: 100%;
+	width: 100%;
+}
+.slideRow {
+	height: 100%;
+}
+
+.slideCol {
+	height: 100%;
+}
+</style>

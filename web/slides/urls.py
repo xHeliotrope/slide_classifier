@@ -24,6 +24,7 @@ from classifier.views import SlideDataView
 from classifier.views import SlideImageView
 from classifier.views import SlideSubsectionView
 from classifier.views import SlideThumbnail
+from classifier.views import SlideTileView
 from classifier.views import SlideView
 
 
@@ -39,4 +40,5 @@ urlpatterns = [
     path("slide/data", SlideDataView.as_view(), name="slide_data"),
     path("slide/image", SlideImageView.as_view(), name="slide_image"),
     path("slide/section/<int:anchor_x>/<int:anchor_y>/<int:size_x>/<int:size_y>/<int:level>", SlideSubsectionView.as_view(), name="slide_subsection"),
+    path("tile/<str:slide_name>/<int:level>/<int:col>/<int:row>/<str:_format>", SlideTileView.as_view(), name="slide_tiling"),
 ]
