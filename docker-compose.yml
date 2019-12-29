@@ -10,7 +10,7 @@ services:
       - pg_network
   nginx:
     restart: always
-    image: nginx:latest
+    image: nginx:alpine
     ports:
       - "443:443"
       - "80:80"
