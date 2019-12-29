@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build && rm -r ../web/static/* && rsync -a dist/static/* ../web/static && cp dist/index.html ../web/classifier/templates && cp public/openseadragon/openseadragon* ../web/static/js && cp -r public/openseadragon/images/* ../web/media/",
+    "build": "wget https://github.com/openseadragon/openseadragon/releases/download/v2.4.1/openseadragon-bin-2.4.1.tar.gz && tar -zxvf openseadragon-bin-2.4.1.tar.gz && rsync -a openseadragon-bin-2.4.1 public/openseadragon && rm openseadragon-bin-2.4.1.tar.gz && rm -r openseadragon-bin-2.4.1 && vue-cli-service build && rm -r ../web/static/* && rsync -a dist/static/* ../web/static && cp dist/index.html ../web/classifier/templates && cp public/openseadragon/openseadragon* ../web/static/js && cp -r public/openseadragon/images/* ../web/media/",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
