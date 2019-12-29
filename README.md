@@ -31,8 +31,3 @@ Tested on:
  - [x] - Linux - Ubuntu
  - [x] - MacOS - Mojave
  - [ ] - Windows - 10
-
-
-## Usage
-
-Support requests can be made to rmoore8849@gmail.com
