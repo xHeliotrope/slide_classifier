@@ -3,10 +3,11 @@ language: python
 python:
   - "3.7"
 
-
 sudo: required
 
 install: "pip install -r web/requirements.txt"
+
+scripts: "web/manage.py test"
 
 services:
   - docker
