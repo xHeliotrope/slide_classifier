@@ -7,7 +7,7 @@ sudo: required
 
 install: "pip install -r web/requirements.txt"
 
-scripts: "web/manage.py test"
+scripts: "docker exec -it slide_classifier_web_1 ./manage.py test"
 
 services:
   - docker
