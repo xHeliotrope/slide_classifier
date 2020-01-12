@@ -133,24 +133,28 @@
 			},
 			setPrefixUrl: function(slide) {
 				this.prefixUrl = "/images/" + slide
-			},
-			initSeadragon: function() {
-			  this.viewer = new OpenSeadragon({
-          id: "seadragonView",
-          tileSources: this.tileSources + this.activeSlide,
-          prefixUrl: "/media/",
-          showNavigator: true,
-          showRotationControl: true,
-          animationTime: 0.5,
-          blendTime: 0.1,
-          constrainDuringPan: true,
-          maxZoomPixelRatio: 2,
-          minZoomLevel: 1,
-          visibilityRatio: 1,
-          zoomPerScroll: 2,
-          timeout: 120000,
-        });
-			},
+      },
+      initSeadragon: function() {
+        if(!this.viewer) {
+          this.viewer = new OpenSeadragon(
+            {
+              id: "seadragonView",
+              tileSources: this.tileSources + this.activeSlide,
+              prefixUrl: "/media/",
+              showNavigator: true,
+              showRotationControl: true,
+              animationTime: 0.5,
+              blendTime: 0.1,
+              constrainDuringPan: true,
+              maxZoomPixelRatio: 2,
+              minZoomLevel: 1,
+              visibilityRatio: 1,
+              zoomPerScroll: 2,
+              timeout: 120000
+            }
+          );
+        }
+      }
     },
     mounted () {
       this.activeSlide = 'C3L-00452-41.svs';
