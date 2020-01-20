@@ -96,7 +96,7 @@
       color="indigo"
       app
     >
-      <span class="white--text">&copy; 2019</span>
+      <span class="white--text">&copy; 2020</span>
     </v-footer>
   </v-app>
 </template>
@@ -111,12 +111,14 @@
       source: String,
     },
     data: () => ({
+			labels: ["Feature 1", "Feature 2"],
       drawer: null,
 			activeWindow: 1,
 			slidesList: [],
 			activeSlide: null,
 			viewer: null,
 			tileSources: '/slide/xml/',
+			imageOptions: null,
     }),
 		methods: {
       setActiveWindow: function(windowNumber) {
@@ -131,30 +133,34 @@
 			setTileSources: function(slide) {
 				this.tileSources = "/tiles/" + slide
 			},
-			setPrefixUrl: function(slide) {
-				this.prefixUrl = "/images/" + slide
-      },
       initSeadragon: function() {
+				var that = this
         if(!this.viewer) {
-          this.viewer = new OpenSeadragon(
-            {
-              id: "seadragonView",
-              tileSources: this.tileSources + this.activeSlide,
-              prefixUrl: "/media/",
-              showNavigator: true,
-              showRotationControl: true,
-              animationTime: 0.5,
-              blendTime: 0.1,
-              constrainDuringPan: true,
-              maxZoomPixelRatio: 2,
-              minZoomLevel: 1,
-              visibilityRatio: 1,
-              zoomPerScroll: 2,
-              timeout: 120000
-            }
-          );
+					var tileSources = [];
+					this.slidesList.forEach(function(slide){
+						tileSources.push(that.tileSources + slide);
+					});
+          this.viewer = new OpenSeadragon(this.getOptions(tileSources));
         }
-      }
+      },
+      getOptions: function(tileSources) {
+        return {
+          id: "seadragonView",
+          tileSources: tileSources,
+					sequenceMode: true,
+          prefixUrl: "/media/",
+          showNavigator: true,
+          showRotationControl: true,
+          animationTime: 0.5,
+          blendTime: 0.1,
+          constrainDuringPan: true,
+          maxZoomPixelRatio: 2,
+          minZoomLevel: 1,
+          visibilityRatio: 1,
+          zoomPerScroll: 2,
+          timeout: 120000
+        }
+			}
     },
     mounted () {
       this.activeSlide = 'C3L-00452-41.svs';
