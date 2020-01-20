@@ -4,7 +4,11 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "wget https://github.com/openseadragon/openseadragon/releases/download/v2.4.1/openseadragon-bin-2.4.1.tar.gz && tar -zxvf openseadragon-bin-2.4.1.tar.gz && rsync -a openseadragon-bin-2.4.1 public/openseadragon && rm openseadragon-bin-2.4.1.tar.gz && rm -r openseadragon-bin-2.4.1 && vue-cli-service build && rm -rf ../web/static && rsync -a dist/static/* ../web/static && cp dist/index.html ../web/classifier/templates && cp public/openseadragon/openseadragon-bin-2.4.1/*.js ../web/static/js && cp -r public/openseadragon/openseadragon-bin-2.4.1/images/* ../web/media/",
+	"download-seadragon": "wget https://github.com/openseadragon/openseadragon/releases/download/v2.4.1/openseadragon-bin-2.4.1.tar.gz && tar -zxvf openseadragon-bin-2.4.1.tar.gz && rsync -a openseadragon-bin-2.4.1 public/openseadragon && rm openseadragon-bin-2.4.1.tar.gz && rm -r openseadragon-bin-2.4.1 ",
+	"remove-old-static": "rm -rf ../web/static",
+	"copy-new-static": "rsync -a dist/static/* ../web/static && cp dist/index.html ../web/classifier/templates && cp public/openseadragon/openseadragon-bin-2.4.1/*.js ../web/static/js && cp -r public/openseadragon/openseadragon-bin-2.4.1/images/* ../web/media/ && cp -r /tmp/os_select/picturae-openseadragonselection-c4a980f/images/* ../web/media && rsync -a /tmp/os_select/picturae-openseadragonselection-c4a980f/dist/*.js ../web/static/js",
+	"download-seadragonselect": "rm -r /tmp/os_select && wget https://github.com/picturae/openseadragonselection/zipball/master -P /tmp && unzip /tmp/master -d /tmp/os_select",
+	"build": "npm run download-seadragon && npm run download-seadragonselect && vue-cli-service build && npm run remove-old-static && npm run copy-new-static",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {

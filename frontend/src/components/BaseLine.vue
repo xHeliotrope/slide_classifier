@@ -115,10 +115,11 @@
       drawer: null,
 			activeWindow: 1,
 			slidesList: [],
-			activeSlide: null,
 			viewer: null,
 			tileSources: '/slide/xml/',
 			imageOptions: null,
+			selections: [],
+			currentSelection: null,
     }),
 		methods: {
       setActiveWindow: function(windowNumber) {
@@ -141,6 +142,8 @@
 						tileSources.push(that.tileSources + slide);
 					});
           this.viewer = new OpenSeadragon(this.getOptions(tileSources));
+					this.currentSelection = this.viewer.selection(this.getSelectionOptions);
+					this.currentSelection.enable();
         }
       },
       getOptions: function(tileSources) {
@@ -160,13 +163,74 @@
           zoomPerScroll: 2,
           timeout: 120000
         }
-			}
+			},
+			getSelectionOptions: function() {
+        return {
+          element:                 null, // html element to use for overlay
+          showSelectionControl:    true, // show button to toggle selection mode
+          toggleButton:            null, // dom element to use as toggle button
+          showConfirmDenyButtons:  true,
+          styleConfirmDenyButtons: true,
+          returnPixelCoordinates:  true,
+          keyboardShortcut:        'c', // key to toggle selection mode
+          rect:                    null, // initial selection as an OpenSeadragon.SelectionRect object
+          allowRotation:           true, // turn selection rotation on or off as needed
+          startRotated:            false, // alternative method for drawing the selection; useful for rotated crops
+          startRotatedHeight:      0.1, // only used if startRotated=true; value is relative to image height
+          restrictToImage:         false, // true = do not allow any part of the selection to be outside the image
+          onSelection:             function(rect) {
+            alert(rect + ' Center point: ' + rect.getCenter() + ' Degree rotation: ' + rect.getDegreeRotation());
+          }, // callback
+          prefixUrl:               null, // overwrites OpenSeadragon's option
+          navImages:               { // overwrites OpenSeadragon's options
+            selection: {
+                  REST:   'selection_rest.png',
+                  GROUP:  'selection_grouphover.png',
+                  HOVER:  'selection_hover.png',
+                  DOWN:   'selection_pressed.png'
+              },
+              selectionConfirm: {
+                  REST:   'selection_confirm_rest.png',
+                  GROUP:  'selection_confirm_grouphover.png',
+                  HOVER:  'selection_confirm_hover.png',
+                  DOWN:   'selection_confirm_pressed.png'
+              },
+              selectionCancel: {
+                  REST:   'selection_cancel_rest.png',
+                  GROUP:  'selection_cancel_grouphover.png',
+                  HOVER:  'selection_cancel_hover.png',
+                  DOWN:   'selection_cancel_pressed.png'
+              },
+          },
+          borderStyle: { // overwriteable style defaults
+              width:      '1px',
+              color:      '#fff'
+          },
+          handleStyle: {
+              top:        '50%',
+              left:       '50%',
+              width:      '6px',
+              height:     '6px',
+              margin:     '-4px 0 0 -4px',
+              background: '#000',
+              border:     '1px solid #ccc'
+          },
+           cornersStyle: {
+              width:      '6px',
+              height:     '6px',
+              background: '#000',
+              border:     '1px solid #ccc'
+          }
+        }
+      }
     },
     mounted () {
-      this.activeSlide = 'C3L-00452-41.svs';
+			var that = this
       axios
         .get('/list_slides')
-        .then(response => (this.slidesList = response.data))
+        .then(function(response) {
+					that.slidesList = response.data;
+				})
 
     }
   }
