@@ -5,6 +5,7 @@ import axios from 'axios'
 
 Vue.config.productionTip = false
 Vue.use(axios)
+Vue.config.devtools = true
 
 new Vue({
   vuetify,

@@ -87,7 +87,7 @@
 					v-show="activeWindow == 3"
         >
           <v-col class="text-center">
-					Window 3
+				    Classifications
           </v-col>
         </v-row>
       </v-container>
@@ -142,8 +142,12 @@
 						tileSources.push(that.tileSources + slide);
 					});
           this.viewer = new OpenSeadragon(this.getOptions(tileSources));
-					this.currentSelection = this.viewer.selection(this.getSelectionOptions);
-					this.currentSelection.enable();
+					this.viewer.selection(this.getSelectionOptions);
+					var selection = this.viewer.selection({
+					  onSelection: function(rect) {
+						alert(rect);
+						}
+					})
         }
       },
       getOptions: function(tileSources) {
