@@ -24,9 +24,6 @@ If the machine running the app loses power or stops running the application, you
 ```
 docker-compose up -d
 ```
-again to get the application up. The IP address of the application may change, so running the
-
-
 Tested on:
  - [x] - Linux - Ubuntu
  - [x] - MacOS - Mojave
