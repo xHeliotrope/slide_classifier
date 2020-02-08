@@ -12,6 +12,8 @@ from django.views import View
 import openslide
 from openslide import deepzoom
 
+from classifier.models import ClassificationType
+
 DEEPZOOM_TILE_QUALITY = 75
 SLIDE_CACHE_SIZE = 10
 
@@ -250,6 +252,15 @@ class SlideXMLView(View):
             raise exc
 
 
+class ListClassificationTypeView(View):
+    """Return list of ClassificationTypes (text)
+    """
+    def get(self, request):
+        classification_types = ClassificationType.objects.all().values_list('name', flat=True)
+        classification_types = [_type for _type in classification_types]
+        return HttpResponse(json.dumps(classification_types), content_type="application/json")
+
+
 class PILBytesIO(io.BytesIO):
     def fileno(self):
         '''Classic PIL doesn't understand io.UnsupportedOperation.'''
@@ -286,3 +297,5 @@ class _SlideCache:
                     self._cache.popitem(last=False)
                 self._cache[path] = slide
         return slide
+
+

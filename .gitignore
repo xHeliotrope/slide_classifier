@@ -5,6 +5,8 @@ web/classifier/static/js
 web/classifier/static/css
 web/static/js
 web/static/css
+web/static/admin
+web/slides/static
 web/media/
 
 frontend/public/openseadragon

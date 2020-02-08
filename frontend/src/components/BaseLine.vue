@@ -88,6 +88,7 @@
         >
           <v-col class="text-center">
 				    Classifications
+						<MyModal>SUP</MyModal>
           </v-col>
         </v-row>
       </v-container>
@@ -103,6 +104,7 @@
 
 <script>
 	import axios from 'axios'
+	import MyModal from './MyModal.vue'
 
   export default {
 		name: 'BaseLine',
@@ -115,6 +117,7 @@
       drawer: null,
 			activeWindow: 1,
 			slidesList: [],
+			classificationTypes: [],
 			viewer: null,
 			tileSources: '/slide/xml/',
 			imageOptions: null,
@@ -142,10 +145,10 @@
 						tileSources.push(that.tileSources + slide);
 					});
           this.viewer = new OpenSeadragon(this.getOptions(tileSources));
-					this.viewer.selection(this.getSelectionOptions);
+					var that = this;
 					var selection = this.viewer.selection({
 					  onSelection: function(rect) {
-						alert(rect);
+						alert(that.classificationTypes);
 						}
 					})
         }
@@ -234,8 +237,14 @@
         .get('/list_slides')
         .then(function(response) {
 					that.slidesList = response.data;
-				})
-
+				}
+			)
+			axios
+				.get('/classification_type/list')
+				.then(function(response) {
+					that.classificationTypes = response.data;
+				}
+			)
     }
   }
 </script>

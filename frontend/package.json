@@ -8,7 +8,8 @@
 	"remove-old-static": "rm -rf ../web/static",
 	"copy-new-static": "rsync -a dist/static/* ../web/static && cp dist/index.html ../web/classifier/templates && cp public/openseadragon/openseadragon-bin-2.4.1/*.js ../web/static/js && cp -r public/openseadragon/openseadragon-bin-2.4.1/images/* ../web/media/ && cp -r /tmp/os_select/picturae-openseadragonselection-c4a980f/images/* ../web/media && rsync -a /tmp/os_select/picturae-openseadragonselection-c4a980f/dist/*.js ../web/static/js",
 	"download-seadragonselect": "rm -r /tmp/os_select && wget https://github.com/picturae/openseadragonselection/zipball/master -P /tmp && unzip /tmp/master -d /tmp/os_select",
-	"build": "npm run download-seadragon && npm run download-seadragonselect && vue-cli-service build && npm run remove-old-static && npm run copy-new-static",
+	"build-python": "../web/ve/bin/python ../web/manage.py collectstatic --noinput",
+	"build": "npm run download-seadragon && npm run download-seadragonselect && vue-cli-service build && npm run remove-old-static && npm run copy-new-static && npm run build-python",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {

@@ -25,18 +25,20 @@ from classifier.views import SlideThumbnail
 from classifier.views import SlideTileView
 from classifier.views import SlideView
 from classifier.views import SlideXMLView
+from classifier.views import ListClassificationTypeView
 
 
 urlpatterns = [
-    path('accounts/login', LoginView.as_view(), name="login"),
-    path('accounts/logout', LogoutView.as_view(), name="logout"),
+    path("accounts/login", LoginView.as_view(), name="login"),
+    path("accounts/logout", LogoutView.as_view(), name="logout"),
     path("admin/", admin.site.urls),
     path("", HomeView.as_view(), name="homepage"),
+    path("classification_type/list", ListClassificationTypeView.as_view(), name="classifications_list"),
     path("list_slides", ListSlidesView.as_view(), name="list_slides"),
-    path("thumbnail/<str:image_name>", SlideThumbnail.as_view(), name="get_thumbnail"),
     path("hash_word/<str:word>", HomeView.as_view(), name="homepage_hash"),
     path("slide", SlideView.as_view(), name="slide"),
     path("slide/image", SlideImageView.as_view(), name="slide_image"),
     path("slide/xml/<str:slide_name>", SlideXMLView.as_view(), name="slide_data"),
     path("slide/xml/<str:slide_name>_files/<int:level>/<int:col>_<int:row>.<str:_format>", SlideTileView.as_view(), name="slide_tiling"),
+    path("thumbnail/<str:image_name>", SlideThumbnail.as_view(), name="get_thumbnail"),
 ]
