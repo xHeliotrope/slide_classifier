@@ -1,5 +1,6 @@
 ve/
 web/images/
+web/image_sections/
 web/slides/db.sqlite3
 web/classifier/static/js
 web/classifier/static/css
