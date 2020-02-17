@@ -4,26 +4,20 @@
       v-model="dialog"
       width="500"
     >
-      <template v-slot:activator="{ on }">
-        <v-btn
-          color="red lighten-2"
-          dark
-          v-on="on"
-        >
-          Click Me
-        </v-btn>
-      </template>
-
       <v-card>
         <v-card-title
           class="headline grey lighten-2"
           primary-title
         >
-          Privacy Policy
+          Classify Tile
         </v-card-title>
+         <v-radio-group v-model="selectedRegion" column>
+            <v-radio label="Feature Region 1" value="feature1"></v-radio>
+            <v-radio label="Precancerous" value="precancerous"></v-radio>
+          </v-radio-group>
 
         <v-card-text>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+				Sending coordinates: {{ coords.x }}, {{ coords.y }}, {{ coords.width }}, {{ coords.height }} to save tile to disk and database. 
         </v-card-text>
 
         <v-divider></v-divider>
@@ -33,9 +27,16 @@
           <v-btn
             color="primary"
             text
+            @click="sendCoordinates()"
+          >
+            Okay
+          </v-btn>
+          <v-btn
+            color="primary"
+            text
             @click="dialog = false"
           >
-            I accept
+            Cancel
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -43,11 +44,29 @@
   </div>
 </template>
 <script>
+  import axios from 'axios'
   export default {
+		props: {
+      dialog: Boolean,
+      coords: Array,
+      filename: String,
+      regions: Array,
+    },
     data () {
       return {
-        dialog: false,
+        selectedRegion: '',
       }
     },
+    methods: {
+      sendCoordinates: function(){
+        var that = this
+        axios
+				.get('slide/save/' + that.filename + '/' + that.selectedRegion + '/' + + that.coords.x + '/' + that.coords.y + '/' + that.coords.width + '/' + that.coords.height)
+				.then(function(response) {
+          that.dialog = false
+				}
+			  )
+      }
+    }
   }
 </script>

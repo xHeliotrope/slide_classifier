@@ -153,12 +153,12 @@ class SlideImageView(View):
 class SlideSubsectionView(View):
     """For retrieving a subsection of a slide
     """
-    def get(self, request, anchor_x, anchor_y, size_x, size_y, level):
+    def get(self, request, slide_name, x_anchor, y_anchor, x_interval, y_interval):
         """GET a subsection
         """
-        filename = "images/C3L-00452-41.svs"
-        slide = openslide.OpenSlide(filename)
-        subsection = slide.read_region((anchor_x, anchor_y), level, (size_x, size_y))
+        slide = openslide.OpenSlide(f'images/{slide_name}')
+        subsection = slide.read_region((x_anchor, y_anchor), 0, (x_interval, y_interval))
+        subsection.save('image_sections/my_file.png', format='png')
         response = HttpResponse(content_type="image/jpeg")
         subsection.save(response, format='png')
         return response
